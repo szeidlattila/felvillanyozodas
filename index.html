@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link rel="icon" href="img/icon.png" />
+    <title>Felvillanyozódás</title>
+  </head>
+  <body>
+    <!-- Palyavalaszto -->
+    <div id="display-game-selector">
+      <h1><span class="background">Pályaválasztó</span></h1>
+      <h2><span class="background">Játék leírása</span></h2>
+      <ul>
+        <li>A fehér cellákba villanykörtéket lehet elhelyezni</li>
+        <li>
+          A villanykörtékből a fény átlósan nem terjed, csak az adott sor és
+          oszlop mentén
+        </li>
+        <li>
+          A fekete cellákon valamilyen tereptárgy van, ami akadályozza a fény
+          terjedését
+        </li>
+        <li>
+          A fekete cellák opcionálisan egy egész számot is tartalmazhatnak 0-tól
+          4-ig. Ez azt jelzi, hogy hány szomszédos (alul, felül, jobbra, balra)
+          cella tartalmaz villanykörtét. Ha van ilyen szám, akkor be kell
+          tartani!
+        </li>
+        <li>Két villanykörte soha nem világíthatja meg egymást!</li>
+        <li>
+          A játék célja a villanykörtéket úgy elhelyezni, hogy minden fehér
+          cellát megvilágítsanak
+        </li>
+      </ul>
+      <h2><span class="background">Melyik pályán szeretnél játszani?</span></h2>
+      <div class="game-selector">
+        <label for="name"><strong>Név:</strong></label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Anonymous"
+          maxlength="15"
+        />
+        <br /><br />
+        <button type="button" id="easy">Könnyű 7x7-es pálya</button>
+        <button type="button" id="advanced">Haladó 7x7-es pálya</button>
+        <button type="button" id="extreme">Extrém 10x10-es pálya</button>
+      </div>
+
+      <h2><span class="background">Játék folytatása</span></h2>
+      <div id="continue">
+        <span id="previous-game">Nincs mentett játék!</span>
+        <button type="button" id="continue-btn">Folytatás</button>
+      </div>
+      <h2><span class="background">Korábbi eredmények</span></h2>
+      <div id="results"><i>Nincsenek korábbi eredmények.</i></div>
+      <div id="btn-delete">
+        <button type="button" id="delete-results">Törlés</button>
+      </div>
+    </div>
+
+    <!-- Jatekter -->
+    <div id="display-game-field">
+      <h1><span class="background">Játéktér</span></h1>
+      <div id="left">
+        <!-- bal oldal -->
+        <h2><span id="text" class="background">Könnyű 7x7-es pálya</span></h2>
+        <h3>Név: <span id="nickname">XY</span></h3>
+        <h3>Idő: <span id="time">0</span></h3>
+        <h3><span id="win">Nyert!</span></h3>
+        <button type="button" id="save">Mentés</button>
+        <button type="button" id="restart">Újrakezdés</button>
+        <button type="button" id="exit">Kilépés</button>
+      </div>
+
+      <div id="tables">
+        <!-- jobb oldal -->
+        <!-- Konnyu 7x7-es palya -->
+        <div id="display-easy">
+          <table id="table-easy">
+            <tr>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black">1</td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+            </tr>
+            <tr>
+              <td class="white"></td>
+              <td class="black">0</td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black">2</td>
+              <td class="white"></td>
+            </tr>
+            <tr>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+            </tr>
+            <tr>
+              <td class="black"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black"></td>
+            </tr>
+            <tr>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+            </tr>
+            <tr>
+              <td class="white"></td>
+              <td class="black"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black">2</td>
+              <td class="white"></td>
+            </tr>
+            <tr>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black">3</td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Halado 7x7-es palya -->
+        <div id="display-advanced">
+          <table id="table-advanced">
+            <tr>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black">0</td>
+              <td class="white"></td>
+              <td class="black"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+            </tr>
+            <tr>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+            </tr>
+            <tr>
+              <td class="black"></td>
+              <td class="white"></td>
+              <td class="black"></td>
+              <td class="white"></td>
+              <td class="black">3</td>
+              <td class="white"></td>
+              <td class="black"></td>
+            </tr>
+            <tr>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black">1</td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+            </tr>
+            <tr>
+              <td class="black">2</td>
+              <td class="white"></td>
+              <td class="black"></td>
+              <td class="white"></td>
+              <td class="black"></td>
+              <td class="white"></td>
+              <td class="black"></td>
+            </tr>
+            <tr>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+            </tr>
+            <tr>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black"></td>
+              <td class="white"></td>
+              <td class="black">2</td>
+              <td class="white"></td>
+              <td class="white"></td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Extrem 10x10-es palya -->
+        <div id="display-extreme">
+          <table id="table-extreme">
+            <tr>
+              <td class="white"></td>
+              <td class="black"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+            </tr>
+            <tr>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black">3</td>
+              <td class="white"></td>
+              <td class="black">2</td>
+              <td class="white"></td>
+              <td class="black"></td>
+            </tr>
+            <tr>
+              <td class="white"></td>
+              <td class="black">0</td>
+              <td class="black"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+            </tr>
+            <tr>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+            </tr>
+            <tr>
+              <td class="white"></td>
+              <td class="black">1</td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black"></td>
+              <td class="black">1</td>
+              <td class="black"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+            </tr>
+            <tr>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black"></td>
+              <td class="black"></td>
+              <td class="black"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black">3</td>
+              <td class="white"></td>
+            </tr>
+            <tr>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+            </tr>
+            <tr>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black">1</td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black">0</td>
+              <td class="black"></td>
+              <td class="white"></td>
+            </tr>
+            <tr>
+              <td class="black">3</td>
+              <td class="white"></td>
+              <td class="black"></td>
+              <td class="white"></td>
+              <td class="black">0</td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+            </tr>
+            <tr>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="white"></td>
+              <td class="black">0</td>
+              <td class="white"></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <hr />
+      <address>Készítette: Szeidl Attila</address>
+    </footer>
+    
+    <script src="js/gameSelector.js"></script>
+    <script src="js/gameField.js"></script>
+  </body>
+</html>
