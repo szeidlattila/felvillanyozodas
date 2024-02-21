@@ -35,7 +35,7 @@ let saved = false;
 btnContinue.disabled = true;
 const footer = document.querySelector("footer")
 
-// oldal betoltesekor local storageos cuccok jok legyenek
+// local storage
 if (JSON.parse(localStorage.getItem("time")) !== null) { // ha van mentett jatek
   previousGame.innerHTML = `${JSON.parse(localStorage.getItem("modeText"))}: ${JSON.parse(localStorage.getItem("name"))} - ${JSON.parse(localStorage.getItem("time"))} másodperc`
   btnContinue.disabled = false;

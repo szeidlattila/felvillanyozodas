@@ -35,7 +35,7 @@
           cellát megvilágítsanak
         </li>
       </ul>
-      <h2><span class="background">Melyik pályán szeretnél játszani?</span></h2>
+      <h2><span class="background">Pálya</span></h2>
       <div class="game-selector">
         <label for="name"><strong>Név:</strong></label>
         <input
@@ -46,9 +46,11 @@
           maxlength="15"
         />
         <br /><br />
-        <button type="button" id="easy">Könnyű 7x7-es pálya</button>
-        <button type="button" id="advanced">Haladó 7x7-es pálya</button>
-        <button type="button" id="extreme">Extrém 10x10-es pálya</button>
+        <div class="button-container">
+          <button type="button" id="easy">Könnyű 7x7-es pálya</button>
+          <button type="button" id="advanced">Haladó 7x7-es pálya</button>
+          <button type="button" id="extreme">Extrém 10x10-es pálya</button>
+        </div>
       </div>
 
       <h2><span class="background">Játék folytatása</span></h2>
@@ -72,9 +74,11 @@
         <h3>Név: <span id="nickname">XY</span></h3>
         <h3>Idő: <span id="time">0</span></h3>
         <h3><span id="win">Nyert!</span></h3>
-        <button type="button" id="save">Mentés</button>
-        <button type="button" id="restart">Újrakezdés</button>
-        <button type="button" id="exit">Kilépés</button>
+        <div class="action-button-container">
+          <button type="button" id="save">Mentés</button>
+          <button type="button" id="restart">Újrakezdés</button>
+          <button type="button" id="exit">Kilépés</button>
+        </div>
       </div>
 
       <div id="tables">

@@ -7,14 +7,21 @@
   --footer: rgba(0, 0, 0, 55%);
 }
 
-div#left {
-  float: left;
-  padding-right: 5rem;
+body {
+  font-family: Arial, Verdana, sans-serif;
+  margin: auto;
+  width: 95%;
+  background-color: #fff5ee;
 }
 
 div#tables {
   padding-top: 1.5rem;
-  float: inline-start;
+  display: block;
+}
+
+div#tables>div>table {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 table,
@@ -63,17 +70,47 @@ td {
   display: none;
 }
 
+.button-container {
+  display: flex;
+  flex-direction: column;
+  column-gap: 0.5em;
+}
+
+.action-button-container {
+  display: flex;
+  justify-content: center;
+  column-gap: 0.5em;
+}
+
 button {
   background-color: var(--primary);
   font-size: 0.9em;
   padding: 0.7em 1em;
+  border-style: solid;
   border-radius: 9px;
-  border: none;
+  border-color: black;
+  color: black;
   cursor: pointer;
 }
 
+.button-container>button {
+  border-radius: 0px;
+}
+
+.button-container>button:first-child {
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
+  border-bottom: none;
+}
+
+.button-container>button:last-child {
+  border-bottom-left-radius: 9px;
+  border-bottom-right-radius: 9px;
+  border-top: none;
+}
+
 button:hover {
-  background-color: var(--hover);
+  background-color: var(--hover) ;
   transition: 0.6s;
 }
 
@@ -138,14 +175,6 @@ input[type="text"] {
 
 input[type="text"]:hover {
   border: 0.2em solid var(--hover);
-}
-
-body {
-  font-family: Arial, Verdana, sans-serif;
-  margin: auto;
-  width: 90%;
-  font-size: 1.1rem;
-  background-color: #fff5ee;
 }
 
 h1,
@@ -215,34 +244,37 @@ li:hover {
   padding-right: 0.4em;
 }
 
-@media screen and (max-width: 655px) {
+@media screen and (min-width: 660px) {
   body {
-    width: 99%;
-    font-size: 1rem;
+    width: 90%;
+    font-size: 1.1rem;
+    background-color: lightblue;
   }
 
-  #tables {
-    margin: 0 auto;
+  button {
+    border: none;
   }
-}
 
-@media screen and (max-width: 600px) {
-  td {
-    height: 3rem;
-    width: 3rem;
+  .button-container {
+    flex-direction: row;
   }
-}
 
-@media screen and (max-width: 515px) {
-  td {
-    height: 2.5rem;
-    width: 2.5rem;
+  .button-container>button {
+    font-size: 0.9em;
+    padding: 0.7em 1em;
+    border-radius: 9px;
+    border: none;
+    cursor: pointer;
   }
-}
 
-@media screen and (max-width: 515px) {
-  td {
-    height: 2rem;
-    width: 2rem;
+  div#left {
+    float: left;
+    padding-right: 5rem;
+  }
+
+  div#tables {
+    float: inline-start;
+    margin: initial;
+    width: initial;
   }
 }
