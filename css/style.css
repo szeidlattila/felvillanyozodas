@@ -4,6 +4,7 @@
   --primary: #ff8c00;
   --secondary: #ffb732;
   --hover: #fffc7f;
+  --green: #7fff94;
   --footer: rgba(0, 0, 0, 55%);
 }
 
@@ -63,6 +64,10 @@ td {
   background-color: lightcoral;
 }
 
+#display-extreme {
+  padding-bottom: 1em;
+}
+
 #display-game-field,
 #display-easy,
 #display-advanced,
@@ -86,15 +91,17 @@ button {
   background-color: var(--primary);
   font-size: 0.9em;
   padding: 0.7em 1em;
-  border-style: solid;
   border-radius: 9px;
-  border-color: black;
-  color: black;
   cursor: pointer;
+  border: none;
 }
 
 .button-container>button {
   border-radius: 0px;
+  border-style: solid;
+  border-color: black;
+  border-width: 0.1em;
+  color: black;
 }
 
 .button-container>button:first-child {
@@ -120,6 +127,11 @@ button[disabled] {
   background-color: #cccccc;
   color: #666666;
   cursor: not-allowed;
+}
+
+button#save:active {
+  background-color: var(--green);
+  transition-duration: 0s;
 }
 
 div#btn-delete {
@@ -204,7 +216,7 @@ h2 .background {
   padding-right: 0.4em;
   padding-top: 0.2em;
   padding-bottom: 0.2em;
-  background-color: #7fff94;
+  background-color: var(--green);
   border-radius: 15px;
   border-style: solid;
   border-color: #3c7846;
@@ -253,8 +265,6 @@ li:hover {
 }
 
 @media screen and (min-width: 560px) {
-  
-
   td {
     height: 3rem;
     width: 3rem;
@@ -272,11 +282,6 @@ li:hover {
   body {
     width: 90%;
     font-size: 1.1rem;
-    background-color: lightblue;
-  }
-
-  button {
-    border: none;
   }
 
   .button-container {
@@ -291,6 +296,13 @@ li:hover {
     cursor: pointer;
   }
 
+  div#tables {
+    margin: initial;
+    width: initial;
+  }
+}
+
+@media screen and (min-width: 870px) {
   .action-button-container {
     justify-content: left;
   }
@@ -302,7 +314,5 @@ li:hover {
 
   div#tables {
     float: inline-start;
-    margin: initial;
-    width: initial;
   }
 }
