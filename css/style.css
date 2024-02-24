@@ -291,6 +291,10 @@ li:hover {
     cursor: pointer;
   }
 
+  .action-button-container {
+    justify-content: left;
+  }
+
   div#left {
     float: left;
     padding-right: 5rem;
