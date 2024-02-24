@@ -1,5 +1,5 @@
-let gameField = document.querySelector("#game-field");
-let table = document.querySelector("#tables");
+const gameField = document.querySelector("#game-field");
+const table = document.querySelector("#tables");
 
 table.addEventListener("click", (e) => {
   if (!e.target.classList.contains("black")) {
@@ -404,12 +404,12 @@ function end() {
 
 // local storageba helyezes
 function store() {
-  let datas = `${text.innerHTML}: ${nickname.innerHTML} - ${timer.currentTime} másodperc`
+  let data = `${text.innerHTML}: ${nickname.innerHTML} - ${timer.currentTime} másodperc`
   let results = []
   if (JSON.parse(localStorage.getItem("results")) !== null) {
     results = JSON.parse(localStorage.getItem("results"));
   }
-  results.unshift(datas);
+  results.unshift(data);
   localStorage.setItem("results", JSON.stringify(results))
   document.querySelector("#results").innerHTML = results.join("<br />");
 }
