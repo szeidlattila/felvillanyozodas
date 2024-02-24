@@ -395,7 +395,10 @@ function end() {
   btnSave.style.display = "none";
   winText.style.display = "table";
   if (saved) {
-    localStorage.clear();
+    localStorage.removeItem("difficulty");
+    localStorage.removeItem("name");
+    localStorage.removeItem("table");
+    localStorage.removeItem("time");
     previousGame.innerHTML = "Nincs mentett játék!"
     btnContinue.disabled = true;
   }

@@ -114,7 +114,7 @@ btnContinue.addEventListener("click", () => {
 btnDelete.addEventListener("click", () => {
   if (confirm("Biztosan törölni szeretnéd a korábbi eredményeket?")) {
     localStorage.removeItem("results");
-    document.querySelector("#results").innerHTML = "<i>Nincsenek korábbi eredmények.</i>";
+    results.innerHTML = "<i>Nincsenek korábbi eredmények.</i>";
     btnDelete.style.display = "none";
   } 
 });
