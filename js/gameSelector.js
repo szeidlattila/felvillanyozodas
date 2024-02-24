@@ -5,9 +5,8 @@ const tables = [...document.querySelectorAll("table")];
 const text = document.querySelector("#text")
 const nickname = document.querySelector("#nickname")
 const winText = document.querySelector("#win")
-let time = document.querySelector("#time")
-let currentTime = 0;
-let timer = null
+
+let timer = new Timer(document.querySelector("#time").innerHTML);
 let currentDifficulty = null
 const texts = {
   easy: "Könnyű 7x7-es pálya",
@@ -59,7 +58,8 @@ btns.map((btn) => btn.addEventListener("click", (e) => {
   footer.style.display = "none";
   nickname.innerHTML = document.querySelector("#name").value === "" ? "Anonymous" : document.querySelector("#name").value;
   saved = false
-  startTimer();
+
+  timer.start();
 }));
 
 // save
@@ -68,10 +68,10 @@ btnSave.addEventListener("click", () => {
   localStorage.setItem("mode", JSON.stringify(currentDifficulty))
   localStorage.setItem("modeText", JSON.stringify(texts[currentDifficulty]))
   localStorage.setItem("name", JSON.stringify(nickname.innerHTML));
-  localStorage.setItem("time", JSON.stringify(currentTime));
+  localStorage.setItem("time", JSON.stringify(timer.currentTime));
 
   // jatek folytatasa szoveg frissitese
-  previousGame.innerHTML = `${texts[currentDifficulty]}: ${nickname.innerHTML} - ${currentTime} másodperc`
+  previousGame.innerHTML = `${texts[currentDifficulty]}: ${nickname.innerHTML} - ${timer.currentTime} másodperc`
   btnContinue.disabled = false;
 });
 
@@ -79,7 +79,7 @@ btnSave.addEventListener("click", () => {
 btnRestart.addEventListener("click", () => { 
   reset();
   btnSave.style.display = "inline";
-  startTimer();
+  timer.start();
 });
 
 // exit
@@ -91,7 +91,7 @@ btnExit.addEventListener("click", () => {
 });
 
 function reset() {
-  stopTimer();
+  timer.reset();
   winText.style.display = "none"
 
   let rows = [];
@@ -156,18 +156,6 @@ function getCells(table) {
   return cells
 }
 
-function startTimer() {
-  time.innerHTML = currentTime
-  timer = setInterval(function () {
-    time.innerHTML = ++currentTime
-  }, 1000);
-}
-
-function stopTimer() {
-  currentTime = 0;
-  clearInterval(timer);
-}
-
 // folytatas
 document.querySelector("#continue").addEventListener("click", () => {
   const mode = JSON.parse(localStorage.getItem("mode"));
@@ -187,8 +175,9 @@ document.querySelector("#continue").addEventListener("click", () => {
   footer.style.display = "none"
   saved = true
   nickname.innerHTML = JSON.parse(localStorage.getItem("name"));
-  currentTime = JSON.parse(localStorage.getItem("time"));
-  startTimer();
+
+  timer.currentTime(JSON.parse(localStorage.getItem("time")));
+  timer.start();
 })
 
 // local storage korabbi eredmenyek uritese
