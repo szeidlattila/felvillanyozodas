@@ -1,63 +1,61 @@
 const displayGameSelector = document.querySelector("#display-game-selector");
 const displayGameField = document.querySelector("#display-game-field");
 const tables = [...document.querySelectorAll("table")];
-
-const text = document.querySelector("#text")
-const nickname = document.querySelector("#nickname")
-const winText = document.querySelector("#win")
-
-let timer = new Timer(document.querySelector("#time").innerHTML);
-let currentDifficulty = null
-const texts = {
-  easy: "Könnyű 7x7-es pálya",
-  advanced: "Haladó 7x7-es pálya",
-  extreme: "Extrém 10x10-es pálya",
-}
-const difficulties = ["easy", "advanced", "extreme"]
-
+const results = document.querySelector("#results");
+const text = document.querySelector("#text");
+const nickname = document.querySelector("#nickname");
+const playerName = document.querySelector("#name");
+const winText = document.querySelector("#win");
 const btns = [...document.querySelectorAll(".difficulty")];
 const btnSave = document.querySelector("#save");
 const btnRestart = document.querySelector("#restart");
 const btnExit = document.querySelector("#exit");
-const btnContinue = document.querySelector("#continue-btn")
-const btnDelete = document.querySelector("#delete-results")
+const btnContinue = document.querySelector("#continue-btn");
+const btnDelete = document.querySelector("#delete-results");
 const previousGame = document.querySelector("#previous-game");
-const footer = document.querySelector("footer")
+const footer = document.querySelector("footer");
 
+const timer = new Timer(document.querySelector("#time"));
+let currentDifficulty = null;
 let fieldsCount;
 let saved = false;
-btnContinue.disabled = true;
+const texts = {
+  easy: "Könnyű 7x7-es pálya",
+  advanced: "Haladó 7x7-es pálya",
+  extreme: "Extrém 10x10-es pálya",
+};
+const difficulties = ["easy", "advanced", "extreme"];
 
 // local storage
 if (JSON.parse(localStorage.getItem("time")) !== null) { // ha van mentett jatek
-  previousGame.innerHTML = `${JSON.parse(localStorage.getItem("modeText"))}: ${JSON.parse(localStorage.getItem("name"))} - ${JSON.parse(localStorage.getItem("time"))} másodperc`
+  previousGame.innerHTML = `${texts[JSON.parse(localStorage.getItem("difficulty"))]}: ${JSON.parse(localStorage.getItem("name"))} - ${JSON.parse(localStorage.getItem("time"))} másodperc`
   btnContinue.disabled = false;
+} else {
+  btnContinue.disabled = true;
 }
 if (JSON.parse(localStorage.getItem("results")) !== null) { // ha vannak korabbi eredmenyek
   btnDelete.style.display = "block";
-  let results = JSON.parse(localStorage.getItem("results"));
-  document.querySelector("#results").innerHTML = results.join("<br />");
+  results.innerHTML = JSON.parse(localStorage.getItem("results")).join("<br />");
 }
 
 // start
 btns.map((btn) => btn.addEventListener("click", (e) => {
-  let difficulty = e.target.id;
-  currentDifficulty = difficulty
+  currentDifficulty = e.target.id;
 
-  fieldsCount = difficulty === "extreme" ? 100 : 49;
+  fieldsCount = currentDifficulty === "extreme" ? 100 : 49;
   displayGameSelector.style.display = "none";
   displayGameField.style.display = "block";
-  document.querySelector("#display-" + difficulty).style.display = "block";
-  difficulties.filter((diff) => diff !== difficulty).map((diff) => document.querySelector("#display-" + diff).style.display = "none");
-  text.innerHTML = texts[difficulty]
+  document.querySelector("#display-" + currentDifficulty).style.display = "block";
+  difficulties.filter((diff) => diff !== currentDifficulty).map((diff) => document.querySelector("#display-" + diff).style.display = "none");
+  text.innerHTML = texts[currentDifficulty];
 
-  setActive(document.querySelector("#table-" + difficulty))
-  difficulties.filter((diff) => diff !== difficulty).map((diff) => setInactive(document.querySelector("#table-" + diff)))
+  setActive(document.querySelector("#table-" + currentDifficulty));
+  difficulties.filter((diff) => diff !== currentDifficulty).map((diff) => setInactive(document.querySelector("#table-" + diff)));
 
   btnSave.style.display = "inline";
   footer.style.display = "none";
-  nickname.innerHTML = document.querySelector("#name").value === "" ? "Anonymous" : document.querySelector("#name").value;
-  saved = false
+  nickname.innerHTML = playerName.value === "" ? "Anonymous" : playerName.value;
+  saved = false;
 
   timer.start();
 }));
@@ -65,13 +63,12 @@ btns.map((btn) => btn.addEventListener("click", (e) => {
 // save
 btnSave.addEventListener("click", () => {
   localStorage.setItem("table", JSON.stringify(document.querySelector("#table-" + currentDifficulty).innerHTML));
-  localStorage.setItem("mode", JSON.stringify(currentDifficulty))
-  localStorage.setItem("modeText", JSON.stringify(texts[currentDifficulty]))
+  localStorage.setItem("difficulty", JSON.stringify(currentDifficulty));
   localStorage.setItem("name", JSON.stringify(nickname.innerHTML));
   localStorage.setItem("time", JSON.stringify(timer.currentTime));
 
-  // jatek folytatasa szoveg frissitese
-  previousGame.innerHTML = `${texts[currentDifficulty]}: ${nickname.innerHTML} - ${timer.currentTime} másodperc`
+  // jatek folytatasa, szoveg frissitese
+  previousGame.innerHTML = `${texts[currentDifficulty]}: ${nickname.innerHTML} - ${timer.currentTime} másodperc`;
   btnContinue.disabled = false;
 });
 
@@ -90,12 +87,44 @@ btnExit.addEventListener("click", () => {
   reset();
 });
 
+// folytatas
+btnContinue.addEventListener("click", () => {
+  currentDifficulty = JSON.parse(localStorage.getItem("difficulty"));
+  const savedTable = JSON.parse(localStorage.getItem("table"));
+
+  fieldsCount = currentDifficulty === "extreme" ? 100 : 49;
+  displayGameSelector.style.display = "none";
+  displayGameField.style.display = "block";
+  document.querySelector("#display-" + currentDifficulty).style.display = "block";
+  difficulties.filter((diff) => diff !== currentDifficulty).map((diff) => document.querySelector("#display-" + diff).style.display = "none");
+  text.innerHTML = texts[currentDifficulty];
+  setActive(document.querySelector("#table-" + currentDifficulty));
+  difficulties.filter((diff) => diff !== currentDifficulty).map((diff) => setInactive(document.querySelector("#table-" + diff)));
+  document.querySelector("#table-" + currentDifficulty).innerHTML = savedTable;
+
+  footer.style.display = "none";
+  saved = true;
+  nickname.innerHTML = JSON.parse(localStorage.getItem("name"));
+
+  timer.currentTime = JSON.parse(localStorage.getItem("time"));
+  timer.start();
+});
+
+// local storage korabbi eredmenyek uritese
+btnDelete.addEventListener("click", () => {
+  if (confirm("Biztosan törölni szeretnéd a korábbi eredményeket?")) {
+    localStorage.removeItem("results");
+    document.querySelector("#results").innerHTML = "<i>Nincsenek korábbi eredmények.</i>";
+    btnDelete.style.display = "none";
+  } 
+});
+
 function reset() {
-  timer.reset();
-  winText.style.display = "none"
+  timer.stop();
+  winText.style.display = "none";
 
   let rows = [];
-    myTable = tables.filter(e => !e.classList.contains("inactive"))[0]
+    myTable = tables.filter(e => !e.classList.contains("inactive"))[0];
     rows = [...myTable.firstChild.nextSibling.childNodes];
     rows = rows.filter((myTable, i) => i % 2 === 0); // osszes tr egy tombben
 
@@ -125,17 +154,16 @@ function reset() {
 }
 
 function setInactive(table) {
-  let cells = getCells(table)
+  let cells = getCells(table);
   cells.map(e => e.classList.add("inactive"));
-  table.classList.add("inactive")
+  table.classList.add("inactive");
 }
 
 function setActive(table) {
-  let cells = getCells(table)
+  let cells = getCells(table);
   cells.map(e => e.classList.remove("inactive"));
-  table.classList.remove("inactive")
+  table.classList.remove("inactive");
 }
-
 
 function getCells(table) {
   let rows = [...table.firstChild.nextSibling.childNodes];
@@ -155,36 +183,3 @@ function getCells(table) {
 
   return cells
 }
-
-// folytatas
-document.querySelector("#continue").addEventListener("click", () => {
-  const mode = JSON.parse(localStorage.getItem("mode"));
-  const savedTable = JSON.parse(localStorage.getItem("table"))
-
-  currentDifficulty = mode
-  fieldsCount = mode === "extreme" ? 100 : 49;
-  displayGameSelector.style.display = "none";
-  displayGameField.style.display = "block";
-  document.querySelector("#display-" + mode).style.display = "block";
-  difficulties.filter((diff) => diff !== mode).map((diff) => document.querySelector("#display-" + diff).style.display = "none");
-  text.innerHTML = texts[mode]
-  setActive(document.querySelector("#table-" + mode))
-  difficulties.filter((diff) => diff !== mode).map((diff) => setInactive(document.querySelector("#table-" + diff)))
-  document.querySelector("#table-" + mode).innerHTML = savedTable
-
-  footer.style.display = "none"
-  saved = true
-  nickname.innerHTML = JSON.parse(localStorage.getItem("name"));
-
-  timer.currentTime(JSON.parse(localStorage.getItem("time")));
-  timer.start();
-})
-
-// local storage korabbi eredmenyek uritese
-btnDelete.addEventListener("click", () => {
-  if (confirm("Biztosan törölni szeretnéd a korábbi eredményeket?")) {
-    localStorage.removeItem("results")
-    document.querySelector("#results").innerHTML = "<i>Nincsenek korábbi eredmények.</i>"
-    btnDelete.style.display = "none"
-  } 
-})

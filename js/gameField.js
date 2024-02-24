@@ -391,8 +391,7 @@ function isCorrect() {
 // jatek vege: nyert
 function end() {
   store();
-  stopTimer();
-  console.log("Nyert!");
+  timer.stop();
   btnSave.style.display = "none";
   winText.style.display = "table";
   if (saved) {
@@ -405,7 +404,7 @@ function end() {
 
 // local storageba helyezes
 function store() {
-  let datas = `${text.innerHTML}: ${nickname.innerHTML} - ${currentTime} másodperc`
+  let datas = `${text.innerHTML}: ${nickname.innerHTML} - ${timer.currentTime} másodperc`
   let results = []
   if (JSON.parse(localStorage.getItem("results")) !== null) {
     results = JSON.parse(localStorage.getItem("results"));

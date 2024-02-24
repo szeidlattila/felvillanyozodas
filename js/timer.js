@@ -1,11 +1,10 @@
 class Timer {
-  #innerHTML;
+  #time;
   #currentTime = 0;
   #timer = null;
 
-  constructor(innerHTML, currentTime) {
-    this.#innerHTML = innerHTML;
-    this.#currentTime = currentTime;
+  constructor(time) {
+    this.#time = time;
   }
 
   get currentTime() {
@@ -17,18 +16,16 @@ class Timer {
   }
 
   start() {
-    this.#innerHTML = this.#currentTime
-    this.#timer = setInterval(function () {
-      this.#innerHTML = ++this.#currentTime
-    }, 1000);
+    this.#time.innerHTML = this.#currentTime;
+    this.#timer = setInterval(() => this.increment(), 1000);
   }
 
   stop() {
+    this.#currentTime = 0;
     clearInterval(this.#timer);
   }
 
-  reset() {
-    this.#currentTime = 0;
-    stop();
+  increment() {
+    this.#time.innerHTML = ++this.#currentTime;
   }
 }
